@@ -64,7 +64,7 @@ in
       fi
 
       if [ "$previous_state" != "$desired_state" ]; then
-        mkdir -p "$state_dir"
+        mkdir -p "$state_dir" "$HOME/.claude" "$HOME/.gemini" "$HOME/.config/opencode"
 
         # Uninstall hooks that were previously enabled
         ${lib.concatMapStringsSep "\n" (name: ''
@@ -77,7 +77,7 @@ in
 
         # Install currently enabled hooks
         ${lib.concatMapStringsSep "\n" (name: ''
-          ${lib.getExe rtk} init ${shellArgs integrations.${name}.flags}
+          ${lib.getExe rtk} init ${shellArgs integrations.${name}.flags} || true
         '') enabledNames}
 
         printf '%s' "$desired_state" > "$state_file"
