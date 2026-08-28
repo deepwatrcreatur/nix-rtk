@@ -17,7 +17,7 @@
   in
   {
     # Re-export llm-agents overlay for convenience
-    overlays.default = llm-agents.overlays.default;
+    overlays.default = llm-agents.overlays.shared-nixpkgs or llm-agents.overlays.default;
 
     # Home-manager module for RTK hook integration
     homeManagerModules = {
@@ -30,7 +30,7 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ llm-agents.overlays.default ];
+          overlays = [ (llm-agents.overlays.shared-nixpkgs or llm-agents.overlays.default) ];
           config.allowUnfree = true;
         };
       in {
